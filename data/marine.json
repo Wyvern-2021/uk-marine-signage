@@ -1,5 +1,5 @@
 {
-  "generated_at": null,
+  "generated_at": "2026-10-05T13:29:32.104275+00:00",
   "source": "Met Office Marine Observations",
   "pages": {
     "page1": [
@@ -15,5 +15,118 @@
       "Malin Head"
     ]
   },
-  "stations": {}
+  "stations": {
+    "Channel": {
+      "name": "Channel",
+      "type": "Buoy",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162103",
+      "observation_time": "2026-10-05T12:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "Seven Stones": {
+      "name": "Seven Stones",
+      "type": "Light Vessel",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162107",
+      "observation_time": null,
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "Sandettie": {
+      "name": "Sandettie",
+      "type": "Light Vessel",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162304",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "M5": {
+      "name": "M5",
+      "type": "Buoy",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162094",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "Donna Nook": {
+      "name": "Donna Nook",
+      "type": "Land",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3385",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "Lerwick": {
+      "name": "Lerwick",
+      "type": "Land",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3005",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "K7": {
+      "name": "K7",
+      "type": "Buoy",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/164046",
+      "observation_time": "2026-10-05T12:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    },
+    "Malin Head": {
+      "name": "Malin Head",
+      "type": "Land",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3980",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown",
+      "pressure_change_hpa": null
+    }
+  }
 }

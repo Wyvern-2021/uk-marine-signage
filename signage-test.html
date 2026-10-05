@@ -3,395 +3,219 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>Signagelive Display Test</title>
+<title>Signagelive Test</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+html,
+body {
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
+    margin: 0;
 
-            width: 100%;
-            height: 100%;
+    padding: 0;
 
-            background: #111827;
-            color: white;
+    width: 100%;
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+    height: 100%;
 
-            overflow: hidden;
-        }
+    overflow: hidden;
 
-        .page {
-            width: 100vw;
-            height: 100vh;
+    background: #000;
 
-            display: flex;
-            flex-direction: column;
+    color: #fff;
 
-            justify-content: center;
-            align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 
-            padding: 40px;
+}
 
-            text-align: center;
-        }
 
-        h1 {
-            margin: 0 0 30px 0;
+#viewport {
 
-            font-size: 48px;
+    width: 100vw;
 
-            color: #38bdf8;
-        }
+    height: 100vh;
 
-        .status {
-            margin-bottom: 30px;
+    border: 15px solid #00ff00;
 
-            padding: 15px 25px;
+    padding: 40px;
 
-            border-radius: 10px;
+    background: #101820;
 
-            background: #064e3b;
+}
 
-            color: #6ee7b7;
 
-            font-size: 24px;
-        }
+h1 {
 
-        .grid {
-            width: min(1100px, 90vw);
+    margin: 0 0 35px 0;
 
-            display: grid;
+    font-size: 60px;
 
-            grid-template-columns:
-                repeat(2, 1fr);
+    color: #00ffff;
 
-            gap: 20px;
-        }
+}
 
-        .item {
-            padding: 25px;
 
-            background: #1f2937;
+.info {
 
-            border:
-                1px solid #374151;
+    font-size: 42px;
 
-            border-radius: 12px;
+    line-height: 1.5;
 
-            text-align: left;
-        }
+    font-weight: bold;
 
-        .label {
-            display: block;
+}
 
-            margin-bottom: 8px;
 
-            color: #9ca3af;
+.label {
 
-            font-size: 18px;
-        }
+    color: #ffff00;
 
-        .value {
-            display: block;
+}
 
-            color: white;
 
-            font-size: 32px;
+.warning {
 
-            font-weight: bold;
+    margin-top: 40px;
 
-            word-break: break-word;
-        }
+    padding: 25px;
 
-        .explanation {
-            max-width: 1000px;
+    background: #ff0000;
 
-            margin-top: 30px;
+    color: #fff;
 
-            color: #9ca3af;
+    font-size: 30px;
 
-            font-size: 18px;
+    font-weight: bold;
 
-            line-height: 1.5;
-        }
+}
 
-    </style>
+</style>
 
 </head>
 
 
 <body>
 
-    <main class="page">
+<div id="viewport">
 
-        <h1>
-            SIGNAGELIVE DISPLAY TEST
-        </h1>
+    <h1>
+        SIGNAGELIVE TEST
+    </h1>
 
-        <div class="status">
-            If you can see this entire box,
-            the webpage is being displayed correctly.
+
+    <div class="info">
+
+        <div>
+            <span class="label">
+                VIEWPORT:
+            </span>
+
+            <span id="viewport-size">
+                loading...
+            </span>
         </div>
 
 
-        <div class="grid">
+        <div>
+            <span class="label">
+                SCREEN:
+            </span>
 
-            <div class="item">
-
-                <span class="label">
-                    Browser viewport width
-                </span>
-
-                <span
-                    class="value"
-                    id="viewport-width"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Browser viewport height
-                </span>
-
-                <span
-                    class="value"
-                    id="viewport-height"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Screen width
-                </span>
-
-                <span
-                    class="value"
-                    id="screen-width"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Screen height
-                </span>
-
-                <span
-                    class="value"
-                    id="screen-height"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Device pixel ratio
-                </span>
-
-                <span
-                    class="value"
-                    id="pixel-ratio"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Available screen
-                </span>
-
-                <span
-                    class="value"
-                    id="available-screen"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Window outer size
-                </span>
-
-                <span
-                    class="value"
-                    id="window-size"
-                >
-                    —
-                </span>
-
-            </div>
-
-
-            <div class="item">
-
-                <span class="label">
-                    Device orientation
-                </span>
-
-                <span
-                    class="value"
-                    id="orientation"
-                >
-                    —
-                </span>
-
-            </div>
-
+            <span id="screen-size">
+                loading...
+            </span>
         </div>
 
 
-        <div class="explanation">
+        <div>
+            <span class="label">
+                DEVICE PIXEL RATIO:
+            </span>
 
-            Please photograph or write down all of the values
-            shown above when this page is displayed on the
-            Signagelive TV.
-
-            <br><br>
-
-            This page is specifically designed to determine
-            whether the Signagelive browser is receiving a
-            different viewport size from the 1920 × 1080
-            display resolution.
-
+            <span id="pixel-ratio">
+                loading...
+            </span>
         </div>
 
-    </main>
+
+        <div>
+            <span class="label">
+                WINDOW:
+            </span>
+
+            <span id="window-size">
+                loading...
+            </span>
+        </div>
+
+    </div>
 
 
-    <script>
+    <div class="warning">
 
-        function updateDisplayInformation() {
+        If you can see this entire green-bordered
+        area, the browser viewport is fitting correctly.
 
-            document.getElementById(
-                "viewport-width"
-            ).textContent =
-                window.innerWidth + " px";
+    </div>
 
-
-            document.getElementById(
-                "viewport-height"
-            ).textContent =
-                window.innerHeight + " px";
+</div>
 
 
-            document.getElementById(
-                "screen-width"
-            ).textContent =
-                screen.width + " px";
+<script>
+
+function updateInformation() {
+
+    document.getElementById(
+        "viewport-size"
+    ).textContent =
+        window.innerWidth
+        + " × "
+        + window.innerHeight
+        + " px";
 
 
-            document.getElementById(
-                "screen-height"
-            ).textContent =
-                screen.height + " px";
+    document.getElementById(
+        "screen-size"
+    ).textContent =
+        screen.width
+        + " × "
+        + screen.height
+        + " px";
 
 
-            document.getElementById(
-                "pixel-ratio"
-            ).textContent =
-                window.devicePixelRatio;
+    document.getElementById(
+        "pixel-ratio"
+    ).textContent =
+        window.devicePixelRatio;
 
 
-            document.getElementById(
-                "available-screen"
-            ).textContent =
-                screen.availWidth
-                + " × "
-                + screen.availHeight
-                + " px";
+    document.getElementById(
+        "window-size"
+    ).textContent =
+        window.outerWidth
+        + " × "
+        + window.outerHeight
+        + " px";
+
+}
 
 
-            document.getElementById(
-                "window-size"
-            ).textContent =
-                window.outerWidth
-                + " × "
-                + window.outerHeight
-                + " px";
+updateInformation();
 
 
-            if (
-                window.matchMedia(
-                    "(orientation: landscape)"
-                ).matches
-            ) {
+window.addEventListener(
+    "resize",
+    updateInformation
+);
 
-                document.getElementById(
-                    "orientation"
-                ).textContent =
-                    "Landscape";
-
-            }
-            else {
-
-                document.getElementById(
-                    "orientation"
-                ).textContent =
-                    "Portrait";
-
-            }
-
-        }
-
-
-        updateDisplayInformation();
-
-
-        window.addEventListener(
-            "resize",
-            updateDisplayInformation
-        );
-
-
-        window.addEventListener(
-            "orientationchange",
-            updateDisplayInformation
-        );
-
-    </script>
+</script>
 
 </body>
 

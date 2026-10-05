@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Signagelive Display Test</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: #111827;
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            overflow: hidden;
+        }
+
+        .page {
+            width: 100vw;
+            height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px;
+
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 30px 0;
+
+            font-size: 48px;
+
+            color: #38bdf8;
+        }
+
+        .status {
+            margin-bottom: 30px;
+
+            padding: 15px 25px;
+
+            border-radius: 10px;
+
+            background: #064e3b;
+
+            color: #6ee7b7;
+
+            font-size: 24px;
+        }
+
+        .grid {
+            width: min(1100px, 90vw);
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .item {
+            padding: 25px;
+
+            background: #1f2937;
+
+            border:
+                1px solid #374151;
+
+            border-radius: 12px;
+
+            text-align: left;
+        }
+
+        .label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #9ca3af;
+
+            font-size: 18px;
+        }
+
+        .value {
+            display: block;
+
+            color: white;
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+        }
+
+        .explanation {
+            max-width: 1000px;
+
+            margin-top: 30px;
+
+            color: #9ca3af;
+
+            font-size: 18px;
+
+            line-height: 1.5;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="page">
+
+        <h1>
+            SIGNAGELIVE DISPLAY TEST
+        </h1>
+
+        <div class="status">
+            If you can see this entire box,
+            the webpage is being displayed correctly.
+        </div>
+
+
+        <div class="grid">
+
+            <div class="item">
+
+                <span class="label">
+                    Browser viewport width
+                </span>
+
+                <span
+                    class="value"
+                    id="viewport-width"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Browser viewport height
+                </span>
+
+                <span
+                    class="value"
+                    id="viewport-height"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Screen width
+                </span>
+
+                <span
+                    class="value"
+                    id="screen-width"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Screen height
+                </span>
+
+                <span
+                    class="value"
+                    id="screen-height"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Device pixel ratio
+                </span>
+
+                <span
+                    class="value"
+                    id="pixel-ratio"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Available screen
+                </span>
+
+                <span
+                    class="value"
+                    id="available-screen"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Window outer size
+                </span>
+
+                <span
+                    class="value"
+                    id="window-size"
+                >
+                    —
+                </span>
+
+            </div>
+
+
+            <div class="item">
+
+                <span class="label">
+                    Device orientation
+                </span>
+
+                <span
+                    class="value"
+                    id="orientation"
+                >
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="explanation">
+
+            Please photograph or write down all of the values
+            shown above when this page is displayed on the
+            Signagelive TV.
+
+            <br><br>
+
+            This page is specifically designed to determine
+            whether the Signagelive browser is receiving a
+            different viewport size from the 1920 × 1080
+            display resolution.
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function updateDisplayInformation() {
+
+            document.getElementById(
+                "viewport-width"
+            ).textContent =
+                window.innerWidth + " px";
+
+
+            document.getElementById(
+                "viewport-height"
+            ).textContent =
+                window.innerHeight + " px";
+
+
+            document.getElementById(
+                "screen-width"
+            ).textContent =
+                screen.width + " px";
+
+
+            document.getElementById(
+                "screen-height"
+            ).textContent =
+                screen.height + " px";
+
+
+            document.getElementById(
+                "pixel-ratio"
+            ).textContent =
+                window.devicePixelRatio;
+
+
+            document.getElementById(
+                "available-screen"
+            ).textContent =
+                screen.availWidth
+                + " × "
+                + screen.availHeight
+                + " px";
+
+
+            document.getElementById(
+                "window-size"
+            ).textContent =
+                window.outerWidth
+                + " × "
+                + window.outerHeight
+                + " px";
+
+
+            if (
+                window.matchMedia(
+                    "(orientation: landscape)"
+                ).matches
+            ) {
+
+                document.getElementById(
+                    "orientation"
+                ).textContent =
+                    "Landscape";
+
+            }
+            else {
+
+                document.getElementById(
+                    "orientation"
+                ).textContent =
+                    "Portrait";
+
+            }
+
+        }
+
+
+        updateDisplayInformation();
+
+
+        window.addEventListener(
+            "resize",
+            updateDisplayInformation
+        );
+
+
+        window.addEventListener(
+            "orientationchange",
+            updateDisplayInformation
+        );
+
+    </script>
+
+</body>
+
+</html>

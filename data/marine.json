@@ -1,5 +1,19 @@
 {
   "generated_at": null,
-  "source": "Met Office UK Marine Observations",
+  "source": "Met Office Marine Observations",
+  "pages": {
+    "page1": [
+      "Channel",
+      "Seven Stones",
+      "Sandettie",
+      "M5"
+    ],
+    "page2": [
+      "Donna Nook",
+      "Lerwick",
+      "K7",
+      "Malin Head"
+    ]
+  },
   "stations": {}
 }

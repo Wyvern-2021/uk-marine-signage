@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
@@ -10,81 +9,72 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>UK Marine Conditions — Page 2</title>
+    <meta
+        http-equiv="Cache-Control"
+        content="no-cache, no-store, must-revalidate"
+    >
 
-    <link rel="stylesheet" href="assets/styles.css">
+    <title>
+        UK Marine Observations - Page 2
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
 
 </head>
 
 
-<body>
+<body data-page="2">
 
-    <header class="topbar">
+    <main class="page">
 
-        <div class="brand">
+        <header>
 
-            <div class="title">
-                UK MARINE CONDITIONS
+            <h1 id="page-title">
+                UK MARINE OBSERVATIONS
+            </h1>
+
+            <div class="header-right">
+
+                <div id="status-message">
+                    Loading observations…
+                </div>
+
+                <div id="last-updated">
+                    Loading…
+                </div>
+
             </div>
 
-            <div class="subtitle">
-                Met Office Marine Observations
-            </div>
+        </header>
 
+
+        <div id="station-grid">
+            <!-- JavaScript inserts four stations -->
         </div>
 
 
-        <div class="header-status">
+        <footer>
 
-            <div id="pageIndicator">
-                PAGE 2 / 2
-            </div>
+            <span>
+                Source: Met Office
+            </span>
 
-            <div id="dataStatus">
-                Loading data...
-            </div>
+            <span>
+                Observations are updated approximately hourly
+            </span>
 
-        </div>
+        </footer>
 
-    </header>
-
-
-    <main
-        id="dashboard"
-        class="dashboard"
-    >
     </main>
 
 
-    <footer>
-
-        <div>
-            MET OFFICE UK MARINE OBSERVATIONS
-        </div>
-
-        <div>
-            All observation times UTC
-        </div>
-
-        <div>
-            Page 2
-        </div>
-
-    </footer>
-
-
-    <script>
-
-        window.DASHBOARD_PAGE = 2;
-
-        window.NEXT_PAGE = "page1.html";
-
-    </script>
-
-
-    <script src="assets/app.js"></script>
-
+    <script
+        src="app.js"
+        defer
+    ></script>
 
 </body>
-
 </html>

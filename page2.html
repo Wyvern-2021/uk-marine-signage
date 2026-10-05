@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -14,26 +15,306 @@
         content="no-cache, no-store, must-revalidate"
     >
 
+    <meta
+        http-equiv="Pragma"
+        content="no-cache"
+    >
+
+    <meta
+        http-equiv="Expires"
+        content="0"
+    >
+
     <title>
         UK Marine Observations - Page 2
     </title>
 
-    <link
-        rel="stylesheet"
-        href="styles.css"
-    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: #07111f;
+
+            color: #ffffff;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+
+        body {
+            overflow: hidden;
+        }
+
+
+        .page {
+            width: 100vw;
+            height: 100vh;
+
+            padding:
+                clamp(18px, 2vw, 35px);
+
+            display: flex;
+            flex-direction: column;
+
+            gap:
+                clamp(12px, 1.5vh, 25px);
+        }
+
+
+        header {
+            flex-shrink: 0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        #page-title {
+            margin: 0;
+
+            font-size:
+                clamp(22px, 2.4vw, 42px);
+
+            line-height: 1.1;
+
+            letter-spacing:
+                0.04em;
+        }
+
+
+        .header-right {
+            text-align: right;
+
+            font-size:
+                clamp(11px, 0.9vw, 16px);
+
+            color: #9fb7ca;
+        }
+
+
+        #status-message {
+            color: #66e0a3;
+
+            margin-bottom: 4px;
+        }
+
+
+        #last-updated {
+            color: #9fb7ca;
+        }
+
+
+        #station-grid {
+            flex: 1;
+
+            min-height: 0;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            grid-template-rows:
+                repeat(2, minmax(0, 1fr));
+
+            gap:
+                clamp(12px, 1.5vw, 25px);
+        }
+
+
+        .station-card {
+            min-width: 0;
+            min-height: 0;
+
+            padding:
+                clamp(15px, 1.5vw, 28px);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #17344f,
+                    #0b1e30
+                );
+
+            border:
+                1px solid #244967;
+
+            border-radius:
+                clamp(10px, 1vw, 18px);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 0, 0, 0.3);
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+        }
+
+
+        .station-card h2 {
+            margin: 0 0 5px 0;
+
+            font-size:
+                clamp(20px, 2vw, 38px);
+
+            line-height: 1.1;
+        }
+
+
+        .observation-time {
+            color: #9fb7ca;
+
+            font-size:
+                clamp(10px, 0.8vw, 15px);
+
+            margin-bottom:
+                clamp(10px, 1vw, 18px);
+        }
+
+
+        .data-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap:
+                clamp(8px, 0.8vw, 15px);
+        }
+
+
+        .data-item {
+            padding:
+                clamp(8px, 0.8vw, 14px);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border-radius: 8px;
+
+            min-width: 0;
+        }
+
+
+        .data-label {
+            display: block;
+
+            color: #9fb7ca;
+
+            font-size:
+                clamp(9px, 0.75vw, 14px);
+
+            text-transform: uppercase;
+
+            letter-spacing:
+                0.05em;
+
+            margin-bottom: 4px;
+        }
+
+
+        .data-value {
+            display: block;
+
+            color: #ffffff;
+
+            font-size:
+                clamp(16px, 1.45vw, 28px);
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        .station-unavailable {
+            opacity: 0.7;
+        }
+
+
+        .unavailable-message {
+            color: #ffd166;
+
+            font-size:
+                clamp(10px, 0.8vw, 15px);
+
+            margin-top: 8px;
+        }
+
+
+        footer {
+            flex-shrink: 0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #718ca0;
+
+            font-size:
+                clamp(9px, 0.7vw, 13px);
+        }
+
+
+        @media (orientation: portrait) {
+
+            body {
+                overflow: auto;
+            }
+
+
+            .page {
+                height: auto;
+
+                min-height: 100vh;
+            }
+
+
+            #station-grid {
+                grid-template-columns: 1fr;
+
+                grid-template-rows:
+                    repeat(4, minmax(220px, 1fr));
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
-<body data-page="2">
+<body>
 
     <main class="page">
 
         <header>
 
             <h1 id="page-title">
-                UK MARINE OBSERVATIONS
+                UK MARINE OBSERVATIONS — PAGE 2
             </h1>
 
             <div class="header-right">
@@ -51,9 +332,7 @@
         </header>
 
 
-        <div id="station-grid">
-            <!-- JavaScript inserts four stations -->
-        </div>
+        <div id="station-grid"></div>
 
 
         <footer>
@@ -71,10 +350,570 @@
     </main>
 
 
-    <script
-        src="app.js"
-        defer
-    ></script>
+    <script>
+
+        const STATIONS = [
+            "DONNA_NOOK",
+            "BOULMER",
+            "LERWICK",
+            "K7"
+        ];
+
+
+        const REFRESH_INTERVAL =
+            5 * 60 * 1000;
+
+
+        const grid =
+            document.getElementById(
+                "station-grid"
+            );
+
+
+        const statusMessage =
+            document.getElementById(
+                "status-message"
+            );
+
+
+        const lastUpdated =
+            document.getElementById(
+                "last-updated"
+            );
+
+
+        function value(
+            number,
+            suffix = "",
+            decimals = 0
+        ) {
+
+            if (
+                number === null ||
+                number === undefined ||
+                number === ""
+            ) {
+
+                return "—";
+
+            }
+
+
+            const n =
+                Number(number);
+
+
+            if (
+                Number.isNaN(n)
+            ) {
+
+                return "—";
+
+            }
+
+
+            return (
+                n.toFixed(decimals)
+                + suffix
+            );
+        }
+
+
+        function pressure(
+            number
+        ) {
+
+            if (
+                number === null ||
+                number === undefined
+            ) {
+
+                return "—";
+
+            }
+
+
+            return (
+                Number(number).toFixed(0)
+                + " hPa"
+            );
+        }
+
+
+        function trend(
+            direction,
+            change
+        ) {
+
+            if (
+                direction === "rising"
+            ) {
+
+                return change !== null &&
+                    change !== undefined
+
+                    ? "↑ Rising "
+                        + Math.abs(
+                            Number(change)
+                        ).toFixed(1)
+                        + " hPa"
+
+                    : "↑ Rising";
+            }
+
+
+            if (
+                direction === "falling"
+            ) {
+
+                return change !== null &&
+                    change !== undefined
+
+                    ? "↓ Falling "
+                        + Math.abs(
+                            Number(change)
+                        ).toFixed(1)
+                        + " hPa"
+
+                    : "↓ Falling";
+            }
+
+
+            if (
+                direction === "steady"
+            ) {
+
+                return "→ Steady";
+            }
+
+
+            return "—";
+        }
+
+
+        function observationTime(
+            timestamp
+        ) {
+
+            if (!timestamp) {
+
+                return "No current observation";
+
+            }
+
+
+            const date =
+                new Date(timestamp);
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "No current observation";
+
+            }
+
+
+            return (
+                date.toLocaleString(
+                    "en-GB",
+                    {
+                        timeZone: "UTC",
+                        day: "2-digit",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false
+                    }
+                )
+                + " UTC"
+            );
+        }
+
+
+        function createDataItem(
+            label,
+            text
+        ) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "data-item";
+
+
+            const labelElement =
+                document.createElement(
+                    "span"
+                );
+
+
+            labelElement.className =
+                "data-label";
+
+
+            labelElement.textContent =
+                label;
+
+
+            const valueElement =
+                document.createElement(
+                    "strong"
+                );
+
+
+            valueElement.className =
+                "data-value";
+
+
+            valueElement.textContent =
+                text;
+
+
+            item.appendChild(
+                labelElement
+            );
+
+
+            item.appendChild(
+                valueElement
+            );
+
+
+            return item;
+        }
+
+
+        function createStationCard(
+            station
+        ) {
+
+            const card =
+                document.createElement(
+                    "section"
+                );
+
+
+            card.className =
+                "station-card";
+
+
+            if (
+                station.status !== "live"
+            ) {
+
+                card.classList.add(
+                    "station-unavailable"
+                );
+
+            }
+
+
+            const heading =
+                document.createElement(
+                    "h2"
+                );
+
+
+            heading.textContent =
+                `${station.name} (${station.descriptor})`;
+
+
+            card.appendChild(
+                heading
+            );
+
+
+            const time =
+                document.createElement(
+                    "div"
+                );
+
+
+            time.className =
+                "observation-time";
+
+
+            time.textContent =
+                observationTime(
+                    station.observation_time
+                );
+
+
+            card.appendChild(
+                time
+            );
+
+
+            const dataGrid =
+                document.createElement(
+                    "div"
+                );
+
+
+            dataGrid.className =
+                "data-grid";
+
+
+            const wind =
+                station.wind_direction
+                    ? `${station.wind_direction} ${value(
+                        station.wind_speed_knots,
+                        " kt"
+                    )}`
+                    : value(
+                        station.wind_speed_knots,
+                        " kt"
+                    );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Wind",
+                    wind
+                )
+            );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Visibility",
+                    value(
+                        station.visibility_nm,
+                        " NM",
+                        1
+                    )
+                )
+            );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Wave height",
+                    value(
+                        station.wave_height_m,
+                        " m",
+                        1
+                    )
+                )
+            );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Sea temperature",
+                    value(
+                        station.sea_temperature_c,
+                        " °C",
+                        1
+                    )
+                )
+            );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Pressure",
+                    pressure(
+                        station.pressure_hpa
+                    )
+                )
+            );
+
+
+            dataGrid.appendChild(
+                createDataItem(
+                    "Trend",
+                    trend(
+                        station.pressure_trend,
+                        station.pressure_change_hpa
+                    )
+                )
+            );
+
+
+            card.appendChild(
+                dataGrid
+            );
+
+
+            if (
+                station.status !== "live"
+            ) {
+
+                const message =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                message.className =
+                    "unavailable-message";
+
+
+                message.textContent =
+                    "No current observation available";
+
+
+                card.appendChild(
+                    message
+                );
+
+            }
+
+
+            return card;
+        }
+
+
+        async function loadData() {
+
+            try {
+
+                statusMessage.textContent =
+                    "Updating observations…";
+
+
+                const response =
+                    await fetch(
+                        "./data/marine.json?v="
+                        + Date.now(),
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                if (
+                    !response.ok
+                ) {
+
+                    throw new Error(
+                        "Unable to load marine.json: "
+                        + response.status
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                grid.innerHTML = "";
+
+
+                for (
+                    const stationId
+                    of STATIONS
+                ) {
+
+                    const station =
+                        data.stations[
+                            stationId
+                        ];
+
+
+                    if (!station) {
+
+                        console.error(
+                            "Missing station:",
+                            stationId
+                        );
+
+                        continue;
+
+                    }
+
+
+                    grid.appendChild(
+                        createStationCard(
+                            station
+                        )
+                    );
+
+                }
+
+
+                if (
+                    data.generated_at
+                ) {
+
+                    const generated =
+                        new Date(
+                            data.generated_at
+                        );
+
+
+                    if (
+                        !Number.isNaN(
+                            generated.getTime()
+                        )
+                    ) {
+
+                        lastUpdated.textContent =
+                            "Data file updated "
+                            +
+                            generated.toLocaleString(
+                                "en-GB",
+                                {
+                                    timeZone: "UTC",
+                                    day: "2-digit",
+                                    month: "short",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: false
+                                }
+                            )
+                            +
+                            " UTC";
+
+                    }
+
+                }
+
+
+                statusMessage.textContent =
+                    "Live Met Office observations";
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                statusMessage.textContent =
+                    "Unable to load observations";
+
+
+                lastUpdated.textContent =
+                    error.message;
+
+            }
+
+        }
+
+
+        loadData();
+
+
+        setInterval(
+            loadData,
+            REFRESH_INTERVAL
+        );
+
+    </script>
 
 </body>
+
 </html>

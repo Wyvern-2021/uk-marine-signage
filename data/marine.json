@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T14:36:50.590262+00:00",
+  "generated_at": "2026-10-05T14:49:42.132787+00:00",
   "source": "Met Office UK Marine Observations",
   "source_description": "Official Met Office observation pages",
   "pages": {
@@ -114,7 +114,7 @@
       "observation_time": "2026-10-05T14:00:00+00:00",
       "wind_speed_knots": 37.0,
       "wind_direction": "WSW",
-      "visibility_nm": 7.4,
+      "visibility_nm": 6.9,
       "wave_height_m": null,
       "sea_temperature_c": null,
       "pressure_hpa": 1004.0,

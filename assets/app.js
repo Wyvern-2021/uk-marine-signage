@@ -1,67 +1,70 @@
-const CONFIG = {
-
-    stations: {
-
-        1: [
-            "K1",
-            "K2",
-            "K7",
-            "Channel"
-        ],
-
-        2: [
-            "K4",
-            "M2",
-            "M4",
-            "M5"
-        ]
-
-    },
+"use strict";
 
 
-    /*
-     * How long each page remains on screen.
-     *
-     * 20 seconds is a good starting point.
-     */
-    pageDuration:
-        20 * 1000,
+const REFRESH_INTERVAL =
+    5 * 60 * 1000;
 
 
-    /*
-     * The Met Office dataset is updated hourly.
-     * Refreshing the JSON every five minutes
-     * lets the screen pick up new data quickly.
-     */
-    dataRefresh:
-        5 * 60 * 1000
-
-};
+const PAGE_1 = [
+    "M5",
+    "SEVEN_STONES",
+    "CHANNEL",
+    "SANDETTIE"
+];
 
 
-/* -----------------------------------------
-   Utility
------------------------------------------ */
-
-function valueOrDash(value) {
-
-    if (
-        value === null ||
-        value === undefined ||
-        value === "" ||
-        Number.isNaN(Number(value))
-    ) {
-        return "—";
-    }
-
-    return value;
-
-}
+const PAGE_2 = [
+    "DONNA_NOOK",
+    "BOULMER",
+    "LERWICK",
+    "K7"
+];
 
 
-function fixed(
+const body =
+    document.body;
+
+
+const pageNumber =
+    Number(
+        body.dataset.page || "1"
+    );
+
+
+const stationIds =
+    pageNumber === 2
+        ? PAGE_2
+        : PAGE_1;
+
+
+const grid =
+    document.getElementById(
+        "station-grid"
+    );
+
+
+const pageTitle =
+    document.getElementById(
+        "page-title"
+    );
+
+
+const lastUpdated =
+    document.getElementById(
+        "last-updated"
+    );
+
+
+const statusMessage =
+    document.getElementById(
+        "status-message"
+    );
+
+
+function displayValue(
     value,
-    decimals = 1
+    suffix = "",
+    decimals = 0
 ) {
 
     if (
@@ -69,198 +72,80 @@ function fixed(
         value === undefined ||
         value === ""
     ) {
+
         return "—";
     }
+
 
     const number =
         Number(value);
 
+
     if (
         Number.isNaN(number)
     ) {
+
         return "—";
     }
 
-    return number.toFixed(
-        decimals
+
+    return (
+        number.toFixed(decimals)
+        + suffix
     );
-
 }
 
 
-/* -----------------------------------------
-   Wind direction
------------------------------------------ */
-
-function directionDegrees(
-    direction
+function displayPressure(
+    value
 ) {
-
-    const directions = {
-
-        N: 0,
-        NNE: 22.5,
-        NE: 45,
-        ENE: 67.5,
-
-        E: 90,
-        ESE: 112.5,
-        SE: 135,
-        SSE: 157.5,
-
-        S: 180,
-        SSW: 202.5,
-        SW: 225,
-        WSW: 247.5,
-
-        W: 270,
-        WNW: 292.5,
-        NW: 315,
-        NNW: 337.5
-
-    };
-
 
     if (
-        typeof direction ===
-        "number"
+        value === null ||
+        value === undefined
     ) {
-        return direction;
+
+        return "—";
     }
 
 
-    return directions[
-        String(direction)
-            .toUpperCase()
-            .trim()
-    ] ?? 0;
-
+    return (
+        Number(value).toFixed(0)
+        + " hPa"
+    );
 }
 
 
-/* -----------------------------------------
-   Timestamp
------------------------------------------ */
-
-function formatTime(
-    timestamp
+function pressureTrend(
+    trend,
+    change
 ) {
 
-    if (!timestamp) {
-        return "No time";
+    if (!trend) {
+
+        return "—";
     }
-
-
-    const date =
-        new Date(timestamp);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-        return timestamp;
-    }
-
-
-    return date.toLocaleString(
-        "en-GB",
-        {
-
-            timeZone:
-                "Europe/London",
-
-            day: "2-digit",
-            month: "short",
-
-            hour: "2-digit",
-            minute: "2-digit",
-
-            hour12: false
-
-        }
-    ) + " UTC";
-
-}
-
-
-/* -----------------------------------------
-   Observation age
------------------------------------------ */
-
-function observationAge(
-    timestamp
-) {
-
-    if (!timestamp) {
-        return null;
-    }
-
-
-    const observed =
-        new Date(timestamp)
-            .getTime();
-
-
-    const now =
-        Date.now();
-
-
-    const ageMinutes =
-        Math.max(
-            0,
-            Math.round(
-                (
-                    now -
-                    observed
-                ) / 60000
-            )
-        );
-
-
-    return ageMinutes;
-
-}
-
-
-/* -----------------------------------------
-   Pressure trend
------------------------------------------ */
-
-function trendDetails(
-    station
-) {
-
-    const trend =
-        station.pressure_trend;
-
-
-    const change =
-        Number(
-            station.pressure_change_hpa
-        );
 
 
     if (
         trend === "rising"
     ) {
 
-        return {
+        if (
+            change !== null &&
+            change !== undefined
+        ) {
 
-            className:
-                "trend-rising",
+            return (
+                "↑ Rising "
+                + Math.abs(
+                    Number(change)
+                ).toFixed(1)
+                + " hPa"
+            );
+        }
 
-            arrow:
-                "↑",
-
-            text:
-                `Rising ${
-                    Math.abs(change)
-                } hPa / 3h`
-
-        };
-
+        return "↑ Rising";
     }
 
 
@@ -268,46 +153,76 @@ function trendDetails(
         trend === "falling"
     ) {
 
-        return {
+        if (
+            change !== null &&
+            change !== undefined
+        ) {
 
-            className:
-                "trend-falling",
+            return (
+                "↓ Falling "
+                + Math.abs(
+                    Number(change)
+                ).toFixed(1)
+                + " hPa"
+            );
+        }
 
-            arrow:
-                "↓",
-
-            text:
-                `Falling ${
-                    Math.abs(change)
-                } hPa / 3h`
-
-        };
-
+        return "↓ Falling";
     }
 
 
-    return {
+    if (
+        trend === "steady"
+    ) {
 
-        className:
-            "trend-steady",
+        return "→ Steady";
+    }
 
-        arrow:
-            "→",
 
-        text:
-            "Steady"
-
-    };
-
+    return "—";
 }
 
 
-/* -----------------------------------------
-   Build card
------------------------------------------ */
+function formatObservationTime(
+    value
+) {
 
-function createCard(
-    stationName,
+    if (!value) {
+
+        return "No current observation";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "No current observation";
+    }
+
+
+    return date.toLocaleString(
+        "en-GB",
+        {
+            timeZone: "UTC",
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        }
+    ) + " UTC";
+}
+
+
+function stationCard(
     station
 ) {
 
@@ -318,318 +233,247 @@ function createCard(
 
 
     card.className =
-        "buoy-card";
+        "station-card";
 
 
-    const age =
-        observationAge(
+    if (
+        station.status !== "live"
+    ) {
+
+        card.classList.add(
+            "station-unavailable"
+        );
+    }
+
+
+    const title =
+        document.createElement(
+            "h2"
+        );
+
+
+    title.textContent =
+        `${station.name} (${station.descriptor})`;
+
+
+    card.appendChild(
+        title
+    );
+
+
+    const observationTime =
+        document.createElement(
+            "div"
+        );
+
+
+    observationTime.className =
+        "observation-time";
+
+
+    observationTime.textContent =
+        formatObservationTime(
             station.observation_time
         );
 
 
-    const isStale =
-        age === null ||
-        age > 180;
+    card.appendChild(
+        observationTime
+    );
 
 
-    const liveClass =
-        isStale
-            ? "stale"
-            : "live";
-
-
-    const liveText =
-        age === null
-            ? "● NO DATA"
-            : age > 180
-                ? `● DATA ${age} MIN OLD`
-                : "● LIVE";
-
-
-    const trend =
-        trendDetails(
-            station
+    const dataGrid =
+        document.createElement(
+            "div"
         );
 
 
-    const windDirection =
-        valueOrDash(
+    dataGrid.className =
+        "data-grid";
+
+
+    const fields = [
+        [
+            "Wind",
             station.wind_direction
-        );
-
-
-    const windDegrees =
-        directionDegrees(
-            station.wind_direction
-        );
-
-
-    card.innerHTML = `
-
-        <div class="buoy-header">
-
-            <div>
-
-                <div class="buoy-name">
-                    ${stationName}
-                </div>
-
-                <div class="buoy-type">
-                    MET OFFICE BUOY
-                </div>
-
-            </div>
-
-
-            <div class="observation-time">
-
-                Observed
-
-                <br>
-
-                ${formatTime(
-                    station.observation_time
-                )}
-
-            </div>
-
-        </div>
-
-
-        <div class="metrics">
-
-
-            <!-- WIND -->
-
-            <div class="metric">
-
-                <div class="metric-label">
-                    Wind
-                </div>
-
-
-                <div class="metric-value wind-value">
-
-                    <span
-                        class="wind-arrow"
-                        style="
-                            transform:
-                            rotate(
-                                ${windDegrees}deg
-                            );
-                        "
-                    >
-                        ↑
-                    </span>
-
-
-                    <span>
-                        ${valueOrDash(
-                            station.wind_speed_knots
-                        )}
-
-                        <span class="metric-unit">
-                            kt
-                        </span>
-                    </span>
-
-
-                    <span class="wind-direction">
-                        ${windDirection}
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- VISIBILITY -->
-
-            <div class="metric">
-
-                <div class="metric-label">
-                    Visibility
-                </div>
-
-
-                <div class="metric-value">
-
-                    ${fixed(
-                        station.visibility_nm,
-                        1
-                    )}
-
-                    <span class="metric-unit">
-                        NM
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- WAVES -->
-
-            <div class="metric">
-
-                <div class="metric-label">
-                    Wave Height
-                </div>
-
-
-                <div class="metric-value">
-
-                    ${fixed(
-                        station.wave_height_m,
-                        1
-                    )}
-
-                    <span class="metric-unit">
-                        m
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- SEA TEMPERATURE -->
-
-            <div class="metric">
-
-                <div class="metric-label">
-                    Sea Temperature
-                </div>
-
-
-                <div class="metric-value">
-
-                    ${fixed(
-                        station.sea_temperature_c,
-                        1
-                    )}
-
-                    <span class="metric-unit">
-                        °C
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRESSURE -->
-
-            <div class="metric pressure">
-
-                <div class="metric-label">
-                    Atmospheric Pressure
-                </div>
-
-
-                <div class="pressure-row">
-
-                    <div class="pressure-main">
-
-                        ${fixed(
-                            station.pressure_hpa,
+                ? `${station.wind_direction} ${displayValue(
+                    station.wind_speed_knots,
+                    " kt",
+                    0
+                )}`
+                : (
+                    station.wind_speed_knots !== null &&
+                    station.wind_speed_knots !== undefined
+                        ? displayValue(
+                            station.wind_speed_knots,
+                            " kt",
                             0
-                        )}
+                        )
+                        : "—"
+                )
+        ],
 
-                        <span class="metric-unit">
-                            hPa
-                        </span>
+        [
+            "Visibility",
+            displayValue(
+                station.visibility_nm,
+                " NM",
+                1
+            )
+        ],
 
-                    </div>
+        [
+            "Wave height",
+            displayValue(
+                station.wave_height_m,
+                " m",
+                1
+            )
+        ],
+
+        [
+            "Sea temperature",
+            displayValue(
+                station.sea_temperature_c,
+                " °C",
+                1
+            )
+        ],
+
+        [
+            "Pressure",
+            displayPressure(
+                station.pressure_hpa
+            )
+        ],
+
+        [
+            "Trend",
+            pressureTrend(
+                station.pressure_trend,
+                station.pressure_change_hpa
+            )
+        ]
+    ];
 
 
-                    <div
-                        class="
-                            pressure-trend
-                            ${trend.className}
-                        "
-                    >
+    for (
+        const [label, value]
+        of fields
+    ) {
 
-                        <span class="trend-arrow">
-                            ${trend.arrow}
-                        </span>
-
-                        <span>
-                            ${trend.text}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+        const item =
+            document.createElement(
+                "div"
+            );
 
 
-        <div class="card-footer">
-
-            <div class="${liveClass}">
-                ${liveText}
-            </div>
+        item.className =
+            "data-item";
 
 
-            <div>
-                Latest available observation
-            </div>
+        const labelElement =
+            document.createElement(
+                "span"
+            );
 
-        </div>
 
-    `;
+        labelElement.className =
+            "data-label";
+
+
+        labelElement.textContent =
+            label;
+
+
+        const valueElement =
+            document.createElement(
+                "strong"
+            );
+
+
+        valueElement.className =
+            "data-value";
+
+
+        valueElement.textContent =
+            value;
+
+
+        item.appendChild(
+            labelElement
+        );
+
+
+        item.appendChild(
+            valueElement
+        );
+
+
+        dataGrid.appendChild(
+            item
+        );
+    }
+
+
+    card.appendChild(
+        dataGrid
+    );
+
+
+    if (
+        station.status !== "live"
+    ) {
+
+        const unavailable =
+            document.createElement(
+                "div"
+            );
+
+
+        unavailable.className =
+            "unavailable-message";
+
+
+        unavailable.textContent =
+            "No current observation available";
+
+
+        card.appendChild(
+            unavailable
+        );
+    }
 
 
     return card;
-
 }
 
 
-/* -----------------------------------------
-   Load data
------------------------------------------ */
-
 async function loadData() {
-
-    const dashboard =
-        document.getElementById(
-            "dashboard"
-        );
-
-
-    const status =
-        document.getElementById(
-            "dataStatus"
-        );
-
 
     try {
 
-        status.textContent =
-            "Updating...";
+        statusMessage.textContent =
+            "Updating observations…";
 
 
         const response =
             await fetch(
-                `data/marine.json?t=${Date.now()}`,
+                "data/marine.json?"
+                + Date.now(),
                 {
-                    cache:
-                        "no-store"
+                    cache: "no-store"
                 }
             );
 
 
-        if (!response.ok) {
+        if (
+            !response.ok
+        ) {
 
             throw new Error(
-                `HTTP ${
-                    response.status
-                }`
+                `HTTP ${response.status}`
             );
-
         }
 
 
@@ -637,64 +481,71 @@ async function loadData() {
             await response.json();
 
 
-        const page =
-            window.DASHBOARD_PAGE ||
-            1;
-
-
-        const stations =
-            CONFIG.stations[
-                page
-            ];
-
-
-        dashboard.innerHTML =
+        grid.innerHTML =
             "";
 
 
         for (
-            const name
-            of stations
+            const stationId
+            of stationIds
         ) {
 
             const station =
-                data.stations?.[
-                    name
+                data.stations[
+                    stationId
                 ];
 
 
-            if (station) {
+            if (!station) {
 
-                dashboard.appendChild(
-                    createCard(
-                        name,
-                        station
-                    )
+                console.error(
+                    "Missing station:",
+                    stationId
                 );
 
-            } else {
-
-                dashboard.appendChild(
-                    createMissingCard(
-                        name
-                    )
-                );
-
+                continue;
             }
 
+
+            grid.appendChild(
+                stationCard(
+                    station
+                )
+            );
         }
 
 
-        status.textContent =
-            `DATA UPDATED ${
-                formatTime(
-                    data.generated_at
+        const generated =
+            new Date(
+                data.generated_at
+            );
+
+
+        if (
+            !Number.isNaN(
+                generated.getTime()
+            )
+        ) {
+
+            lastUpdated.textContent =
+                "Data file updated "
+                + generated.toLocaleString(
+                    "en-GB",
+                    {
+                        timeZone: "UTC",
+                        day: "2-digit",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false
+                    }
                 )
-            }`;
+                + " UTC";
+        }
 
 
-        status.style.color =
-            "#43e38a";
+        statusMessage.textContent =
+            "Live Met Office observations";
 
 
     } catch (error) {
@@ -704,115 +555,22 @@ async function loadData() {
         );
 
 
-        status.textContent =
-            "DATA UPDATE ERROR";
-
-
-        status.style.color =
-            "#ff6868";
-
+        statusMessage.textContent =
+            "Unable to refresh data — displaying last available data";
     }
-
 }
 
 
-/* -----------------------------------------
-   Missing station
------------------------------------------ */
+pageTitle.textContent =
+    pageNumber === 2
+        ? "UK MARINE OBSERVATIONS — PAGE 2"
+        : "UK MARINE OBSERVATIONS — PAGE 1";
 
-function createMissingCard(
-    name
-) {
-
-    const card =
-        document.createElement(
-            "section"
-        );
-
-
-    card.className =
-        "buoy-card";
-
-
-    card.innerHTML = `
-
-        <div class="buoy-header">
-
-            <div>
-
-                <div class="buoy-name">
-                    ${name}
-                </div>
-
-                <div class="buoy-type">
-                    MET OFFICE BUOY
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="metric"
-            style="
-                flex: 1;
-                justify-content: center;
-            "
-        >
-
-            <div class="metric-label">
-                Observation
-            </div>
-
-            <div class="metric-value">
-                —
-            </div>
-
-            <div class="metric-label">
-                No current observation
-                available
-            </div>
-
-        </div>
-
-    `;
-
-
-    return card;
-
-}
-
-
-/* -----------------------------------------
-   Automatic page rotation
------------------------------------------ */
-
-function startPageRotation() {
-
-    setTimeout(
-        function () {
-
-            window.location.href =
-                window.NEXT_PAGE;
-
-        },
-        CONFIG.pageDuration
-    );
-
-}
-
-
-/* -----------------------------------------
-   Start application
------------------------------------------ */
 
 loadData();
-
-startPageRotation();
 
 
 setInterval(
     loadData,
-    CONFIG.dataRefresh
+    REFRESH_INTERVAL
 );

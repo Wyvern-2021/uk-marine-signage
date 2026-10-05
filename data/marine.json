@@ -1,5 +1,5 @@
 {
-  "generated_at": null,
+  "generated_at": "2026-10-05T14:27:13.941421+00:00",
   "source": "Met Office UK Marine Observations",
   "source_description": "Official Met Office observation pages",
   "pages": {
@@ -16,5 +16,125 @@
       "K7"
     ]
   },
-  "stations": {}
+  "stations": {
+    "M5": {
+      "name": "M5",
+      "descriptor": "Celtic Sea",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162094",
+      "status": "live",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": 13.0,
+      "wind_direction": "WSW",
+      "visibility_nm": null,
+      "wave_height_m": 1.4,
+      "sea_temperature_c": 17.0,
+      "pressure_hpa": 1023.0,
+      "pressure_trend": "falling",
+      "pressure_change_hpa": -1.0
+    },
+    "SEVEN_STONES": {
+      "name": "Seven Stones",
+      "descriptor": "Land's End",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162107",
+      "status": "no_current_data",
+      "observation_time": null,
+      "wind_speed_knots": null,
+      "wind_direction": null,
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": null,
+      "pressure_trend": "unknown"
+    },
+    "CHANNEL": {
+      "name": "Channel",
+      "descriptor": "English Channel",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162103",
+      "status": "live",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": 4.0,
+      "wind_direction": "NW",
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": 18.0,
+      "pressure_hpa": 1025.0,
+      "pressure_trend": "falling",
+      "pressure_change_hpa": -2.0
+    },
+    "SANDETTIE": {
+      "name": "Sandettie",
+      "descriptor": "East Channel",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/162304",
+      "status": "live",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": 16.0,
+      "wind_direction": "SW",
+      "visibility_nm": 10.8,
+      "wave_height_m": 0.3,
+      "sea_temperature_c": 19.0,
+      "pressure_hpa": 1024.0,
+      "pressure_trend": "falling",
+      "pressure_change_hpa": -1.0
+    },
+    "DONNA_NOOK": {
+      "name": "Donna Nook",
+      "descriptor": "East Coast",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3385",
+      "status": "live",
+      "observation_time": "2026-10-05T14:00:00+00:00",
+      "wind_speed_knots": 16.0,
+      "wind_direction": "SW",
+      "visibility_nm": 22.2,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": 1019.0,
+      "pressure_trend": "falling",
+      "pressure_change_hpa": -1.0
+    },
+    "BOULMER": {
+      "name": "Boulmer",
+      "descriptor": "NE Coast, England",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3240",
+      "status": "live",
+      "observation_time": "2026-10-05T14:00:00+00:00",
+      "wind_speed_knots": 23.0,
+      "wind_direction": "WSW",
+      "visibility_nm": 30.7,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": 1015.0,
+      "pressure_trend": "steady",
+      "pressure_change_hpa": 0.0
+    },
+    "LERWICK": {
+      "name": "Lerwick",
+      "descriptor": "Shetland",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/3005",
+      "status": "live",
+      "observation_time": "2026-10-05T14:00:00+00:00",
+      "wind_speed_knots": 36.0,
+      "wind_direction": "W",
+      "visibility_nm": 7.6,
+      "wave_height_m": null,
+      "sea_temperature_c": null,
+      "pressure_hpa": 1004.0,
+      "pressure_trend": "rising",
+      "pressure_change_hpa": 2.0
+    },
+    "K7": {
+      "name": "K7",
+      "descriptor": "North Atlantic",
+      "source_url": "https://weather.metoffice.gov.uk/specialist-forecasts/coast-and-sea/observations/164046",
+      "status": "live",
+      "observation_time": "2026-10-05T13:00:00+00:00",
+      "wind_speed_knots": 34.0,
+      "wind_direction": "W",
+      "visibility_nm": null,
+      "wave_height_m": null,
+      "sea_temperature_c": 12.0,
+      "pressure_hpa": 1002.0,
+      "pressure_trend": "rising",
+      "pressure_change_hpa": 3.0
+    }
+  }
 }

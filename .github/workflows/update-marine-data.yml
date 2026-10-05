@@ -6,16 +6,16 @@ on:
 
   schedule:
 
-    # Run at 25 minutes past every hour.
+    # Met Office marine observations are updated
+    # approximately hourly, around 15 minutes past
+    # the hour.
     #
-    # The Met Office publishes its public
-    # marine dataset hourly, normally around
-    # 15 minutes past the hour.
-    - cron: "25 * * * *"
+    # Run this job at 20 minutes past each hour.
+
+    - cron: "20 * * * *"
 
 
 permissions:
-
   contents: write
 
 
@@ -32,41 +32,62 @@ jobs:
 
     runs-on: ubuntu-latest
 
-
     steps:
+
+      # ------------------------------------------------------
+      # Checkout repository
+      # ------------------------------------------------------
 
       - name: Checkout repository
 
         uses: actions/checkout@v4
 
 
+      # ------------------------------------------------------
+      # Python
+      # ------------------------------------------------------
+
       - name: Set up Python
 
         uses: actions/setup-python@v5
 
         with:
-
           python-version: "3.12"
 
+
+      # ------------------------------------------------------
+      # Python packages
+      #
+      # NO AWS CLI
+      # NO apt-get
+      # NO AWS credentials
+      # ------------------------------------------------------
 
       - name: Install Python dependencies
 
         run: |
 
-          python -m pip install \
-            --upgrade pip
+          python -m pip install --upgrade pip
 
           python -m pip install \
-            pandas \
-            lxml
+            requests \
+            beautifulsoup4
 
 
-      - name: Update marine data
+      # ------------------------------------------------------
+      # Update observations
+      # ------------------------------------------------------
+
+      - name: Download Met Office observations
 
         run: |
 
           python scripts/update_marine.py
 
+
+      # ------------------------------------------------------
+      # Validate JSON
+      # ------------------------------------------------------
 
       - name: Validate JSON
 
@@ -79,7 +100,11 @@ jobs:
           echo "JSON validation successful."
 
 
-      - name: Validate station list
+      # ------------------------------------------------------
+      # Validate station configuration
+      # ------------------------------------------------------
+
+      - name: Validate requested stations
 
         run: |
 
@@ -88,80 +113,115 @@ jobs:
           import json
           import sys
 
+
           expected_page1 = [
-              "Channel",
-              "Seven Stones",
-              "Sandettie",
               "M5",
+              "SEVEN_STONES",
+              "CHANNEL",
+              "SANDETTIE",
           ]
 
+
           expected_page2 = [
-              "Donna Nook",
-              "Lerwick",
+              "DONNA_NOOK",
+              "BOULMER",
+              "LERWICK",
               "K7",
-              "Malin Head",
           ]
+
 
           with open(
               "data/marine.json",
               "r",
-              encoding="utf-8"
+              encoding="utf-8",
           ) as file:
 
               data = json.load(file)
 
 
-          if data.get("pages", {}).get(
+          actual_page1 = data[
+              "pages"
+          ][
               "page1"
-          ) != expected_page1:
-
-              print(
-                  "ERROR: Page 1 station list "
-                  "is incorrect."
-              )
-
-              sys.exit(1)
+          ]
 
 
-          if data.get("pages", {}).get(
+          actual_page2 = data[
+              "pages"
+          ][
               "page2"
-          ) != expected_page2:
+          ]
+
+
+          if actual_page1 != expected_page1:
 
               print(
-                  "ERROR: Page 2 station list "
-                  "is incorrect."
+                  "ERROR: Page 1 is incorrect."
+              )
+
+              print(
+                  "Expected:",
+                  expected_page1,
+              )
+
+              print(
+                  "Found:",
+                  actual_page1,
               )
 
               sys.exit(1)
 
 
-          stations = data.get(
-              "stations",
-              {}
+          if actual_page2 != expected_page2:
+
+              print(
+                  "ERROR: Page 2 is incorrect."
+              )
+
+              print(
+                  "Expected:",
+                  expected_page2,
+              )
+
+              print(
+                  "Found:",
+                  actual_page2,
+              )
+
+              sys.exit(1)
+
+
+          expected_stations = (
+              expected_page1
+              + expected_page2
           )
 
 
-          for station in (
-              expected_page1
-              + expected_page2
-          ):
+          for station in expected_stations:
 
-              if station not in stations:
+              if station not in data[
+                  "stations"
+              ]:
 
                   print(
-                      f"ERROR: Missing station "
-                      f"{station}"
+                      "ERROR: Missing station:",
+                      station,
                   )
 
                   sys.exit(1)
 
 
           print(
-              "All eight stations are present."
+              "All eight requested stations "
+              "are present."
           )
 
           PY
 
+
+      # ------------------------------------------------------
+      # Display generated data in the Action log
+      # ------------------------------------------------------
 
       - name: Show generated data
 
@@ -170,7 +230,11 @@ jobs:
           cat data/marine.json
 
 
-      - name: Commit updated data
+      # ------------------------------------------------------
+      # Commit changed data
+      # ------------------------------------------------------
+
+      - name: Commit updated observations
 
         run: |
 
@@ -186,12 +250,12 @@ jobs:
 
           if git diff --cached --quiet; then
 
-            echo "No changes to commit."
+            echo "No observation changes."
 
           else
 
             git commit \
-              -m "Update marine observations"
+              -m "Update Met Office marine observations"
 
             git push
 

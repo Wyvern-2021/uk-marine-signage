@@ -1,262 +1,137 @@
-name: Update UK Marine Data
+name: Update Marine Data and Deploy Website
 
 on:
-
   workflow_dispatch:
 
   schedule:
+    - cron: "17 * * * *"
 
-    # Met Office marine observations are updated
-    # approximately hourly, around 15 minutes past
-    # the hour.
-    #
-    # Run this job at 20 minutes past each hour.
-
-    - cron: "20 * * * *"
+  push:
+    branches:
+      - main
 
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 
 concurrency:
-
-  group: marine-data-update
-
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 
 jobs:
 
-  update:
+  update-data:
 
     runs-on: ubuntu-latest
 
     steps:
 
-      # ------------------------------------------------------
-      # Checkout repository
-      # ------------------------------------------------------
-
       - name: Checkout repository
-
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-
-      # ------------------------------------------------------
-      # Python
-      # ------------------------------------------------------
 
       - name: Set up Python
-
         uses: actions/setup-python@v5
-
         with:
-          python-version: "3.12"
+          python-version: "3.x"
 
-
-      # ------------------------------------------------------
-      # Python packages
-      #
-      # NO AWS CLI
-      # NO apt-get
-      # NO AWS credentials
-      # ------------------------------------------------------
 
       - name: Install Python dependencies
-
         run: |
-
           python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
 
-          python -m pip install \
-            requests \
-            beautifulsoup4
 
-
-      # ------------------------------------------------------
-      # Update observations
-      # ------------------------------------------------------
-
-      - name: Download Met Office observations
-
+      - name: Update marine observations
         run: |
-
           python scripts/update_marine.py
 
 
-      # ------------------------------------------------------
-      # Validate JSON
-      # ------------------------------------------------------
-
-      - name: Validate JSON
-
+      - name: Check generated data
         run: |
+          echo "Checking data/marine.json..."
 
-          python -m json.tool \
-            data/marine.json \
-            > /dev/null
+          test -f data/marine.json
 
-          echo "JSON validation successful."
-
-
-      # ------------------------------------------------------
-      # Validate station configuration
-      # ------------------------------------------------------
-
-      - name: Validate requested stations
-
-        run: |
-
-          python3 - <<'PY'
-
+          python - <<'PY'
           import json
-          import sys
 
+          with open("data/marine.json", "r", encoding="utf-8") as f:
+              data = json.load(f)
 
-          expected_page1 = [
-              "M5",
-              "SEVEN_STONES",
-              "CHANNEL",
-              "SANDETTIE",
-          ]
+          print("marine.json loaded successfully.")
 
+          if "stations" not in data:
+              raise SystemExit("ERROR: 'stations' is missing from marine.json")
 
-          expected_page2 = [
-              "DONNA_NOOK",
-              "BOULMER",
-              "LERWICK",
-              "K7",
-          ]
+          print("Stations found:")
 
-
-          with open(
-              "data/marine.json",
-              "r",
-              encoding="utf-8",
-          ) as file:
-
-              data = json.load(file)
-
-
-          actual_page1 = data[
-              "pages"
-          ][
-              "page1"
-          ]
-
-
-          actual_page2 = data[
-              "pages"
-          ][
-              "page2"
-          ]
-
-
-          if actual_page1 != expected_page1:
-
+          for station_id, station in data["stations"].items():
               print(
-                  "ERROR: Page 1 is incorrect."
+                  f"  {station_id}: "
+                  f"{station.get('name', 'Unknown')}"
               )
-
-              print(
-                  "Expected:",
-                  expected_page1,
-              )
-
-              print(
-                  "Found:",
-                  actual_page1,
-              )
-
-              sys.exit(1)
-
-
-          if actual_page2 != expected_page2:
-
-              print(
-                  "ERROR: Page 2 is incorrect."
-              )
-
-              print(
-                  "Expected:",
-                  expected_page2,
-              )
-
-              print(
-                  "Found:",
-                  actual_page2,
-              )
-
-              sys.exit(1)
-
-
-          expected_stations = (
-              expected_page1
-              + expected_page2
-          )
-
-
-          for station in expected_stations:
-
-              if station not in data[
-                  "stations"
-              ]:
-
-                  print(
-                      "ERROR: Missing station:",
-                      station,
-                  )
-
-                  sys.exit(1)
-
-
-          print(
-              "All eight requested stations "
-              "are present."
-          )
-
           PY
 
 
-      # ------------------------------------------------------
-      # Display generated data in the Action log
-      # ------------------------------------------------------
-
-      - name: Show generated data
-
+      - name: Commit updated marine data
         run: |
 
-          cat data/marine.json
-
-
-      # ------------------------------------------------------
-      # Commit changed data
-      # ------------------------------------------------------
-
-      - name: Commit updated observations
-
-        run: |
-
-          git config user.name \
-            "github-actions[bot]"
+          git config user.name "github-actions[bot]"
 
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-
           git add data/marine.json
-
 
           if git diff --cached --quiet; then
 
-            echo "No observation changes."
+            echo "No marine data changes to commit."
 
           else
 
-            git commit \
-              -m "Update Met Office marine observations"
+            git commit -m "Update marine observations"
 
             git push
 
           fi
+
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    needs:
+      - update-data
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "."
+
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

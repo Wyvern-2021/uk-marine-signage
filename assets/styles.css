@@ -1,30 +1,15 @@
 :root {
-
-    --background: #06131e;
-
-    --panel: #0b202e;
-    --panel2: #0d2737;
-
-    --border: #1c455c;
-
-    --white: #ffffff;
-
-    --muted: #9db6c5;
-
-    --cyan: #35c5ff;
-
-    --green: #43e38a;
-
-    --amber: #ffc857;
-
-    --red: #ff6868;
-
+    --background: #07111f;
+    --card: #10243a;
+    --card-border: #244967;
+    --text: #ffffff;
+    --muted: #9fb7ca;
+    --accent: #49b7ff;
+    --good: #66e0a3;
+    --warning: #ffd166;
+    --danger: #ff7b7b;
 }
 
-
-/* -----------------------------------------
-   GLOBAL
------------------------------------------ */
 
 * {
     box-sizing: border-box;
@@ -33,26 +18,22 @@
 
 html,
 body {
-
-    width: 100%;
-    height: 100%;
-
     margin: 0;
     padding: 0;
-
+    width: 100%;
+    height: 100%;
 }
 
 
 body {
-
     background:
         radial-gradient(
-            circle at top right,
-            #0c2c40 0,
-            var(--background) 45%
+            circle at top,
+            #12304b 0%,
+            var(--background) 55%
         );
 
-    color: var(--white);
+    color: var(--text);
 
     font-family:
         Arial,
@@ -60,333 +41,176 @@ body {
         sans-serif;
 
     overflow: hidden;
-
 }
 
 
-/* -----------------------------------------
-   HEADER
------------------------------------------ */
-
-.topbar {
-
-    height: 12vh;
-
-    padding:
-        1.4vh
-        2vw;
+.page {
+    width: 100vw;
+    height: 100vh;
 
     display: flex;
+    flex-direction: column;
 
-    align-items: center;
+    padding:
+        clamp(18px, 2vw, 35px);
+
+    gap:
+        clamp(12px, 1.5vh, 25px);
+}
+
+
+header {
+    display: flex;
 
     justify-content: space-between;
 
-    border-bottom:
-        1px solid
-        var(--border);
+    align-items: center;
 
+    flex-shrink: 0;
 }
 
 
-.title {
+#page-title {
+    margin: 0;
 
     font-size:
-        clamp(
-            25px,
-            3vw,
-            50px
-        );
-
-    font-weight: 800;
-
-    letter-spacing:
-        0.05em;
-
-}
-
-
-.subtitle {
-
-    margin-top: 0.4vh;
-
-    color:
-        var(--muted);
-
-    font-size:
-        clamp(
-            12px,
-            1vw,
-            20px
-        );
-
-}
-
-
-.header-status {
-
-    text-align: right;
-
-    color:
-        var(--muted);
-
-    font-size:
-        clamp(
-            11px,
-            0.9vw,
-            18px
-        );
-
-}
-
-
-#pageIndicator {
-
-    color:
-        var(--cyan);
+        clamp(22px, 2.4vw, 42px);
 
     font-weight: 700;
 
-    margin-bottom:
-        0.4vh;
-
+    letter-spacing:
+        0.04em;
 }
 
 
-#dataStatus {
+.header-right {
+    text-align: right;
 
-    transition:
-        color 0.3s ease;
+    color: var(--muted);
 
+    font-size:
+        clamp(12px, 1vw, 18px);
 }
 
 
-/* -----------------------------------------
-   DASHBOARD
------------------------------------------ */
+#status-message {
+    color: var(--good);
 
-.dashboard {
+    margin-bottom: 4px;
+}
 
-    width: 100%;
 
-    height: 83vh;
+#last-updated {
+    color: var(--muted);
+}
 
-    padding:
-        1.4vh
-        1.4vw;
+
+#station-grid {
+    flex: 1;
+
+    min-height: 0;
 
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+        repeat(2, minmax(0, 1fr));
 
     grid-template-rows:
-        repeat(2, 1fr);
+        repeat(2, minmax(0, 1fr));
 
     gap:
-        1vw;
-
+        clamp(12px, 1.5vw, 25px);
 }
 
 
-/* -----------------------------------------
-   BUOY CARD
------------------------------------------ */
-
-.buoy-card {
+.station-card {
+    min-width: 0;
+    min-height: 0;
 
     background:
         linear-gradient(
             145deg,
-            var(--panel2),
-            var(--panel)
+            rgba(23, 52, 79, 0.98),
+            rgba(11, 30, 48, 0.98)
         );
 
     border:
-        1px solid
-        var(--border);
+        1px solid var(--card-border);
 
     border-radius:
-        14px;
+        clamp(10px, 1vw, 18px);
 
     padding:
-        1.1vw;
+        clamp(15px, 1.5vw, 28px);
 
     display: flex;
 
     flex-direction: column;
 
-    min-width: 0;
-
-    min-height: 0;
+    justify-content: space-between;
 
     box-shadow:
         0 10px 35px
-        rgba(
-            0,
-            0,
-            0,
-            0.25
-        );
-
+        rgba(0, 0, 0, 0.25);
 }
 
 
-/* -----------------------------------------
-   BUOY HEADER
------------------------------------------ */
-
-.buoy-header {
-
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        flex-start;
-
-    padding-bottom:
-        0.8vh;
-
-    border-bottom:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.08
-        );
-
-}
-
-
-.buoy-name {
-
-    color:
-        var(--cyan);
+.station-card h2 {
+    margin:
+        0 0 5px 0;
 
     font-size:
-        clamp(
-            25px,
-            2.2vw,
-            43px
-        );
+        clamp(22px, 2.2vw, 40px);
 
-    font-weight:
-        800;
+    line-height: 1.1;
 
-}
-
-
-.buoy-type {
-
-    margin-top:
-        0.2vh;
-
-    color:
-        var(--muted);
-
-    font-size:
-        clamp(
-            10px,
-            0.75vw,
-            15px
-        );
-
-    text-transform:
-        uppercase;
-
-    letter-spacing:
-        0.06em;
-
+    color: var(--text);
 }
 
 
 .observation-time {
-
-    text-align:
-        right;
-
-    color:
-        var(--muted);
+    color: var(--muted);
 
     font-size:
-        clamp(
-            10px,
-            0.8vw,
-            16px
-        );
+        clamp(11px, 0.9vw, 16px);
 
+    margin-bottom:
+        clamp(10px, 1vw, 18px);
 }
 
 
-/* -----------------------------------------
-   DATA GRID
------------------------------------------ */
-
-.metrics {
-
-    flex:
-        1;
-
-    display:
-        grid;
+.data-grid {
+    display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
-
-    grid-template-rows:
-        repeat(2, 1fr);
+        repeat(2, minmax(0, 1fr));
 
     gap:
-        0.7vw;
-
-    padding-top:
-        0.8vh;
-
+        clamp(8px, 0.8vw, 15px);
 }
 
 
-.metric {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    justify-content:
-        center;
-
-    padding:
-        0.8vw;
-
+.data-item {
     background:
-        rgba(
-            255,
-            255,
-            255,
-            0.025
-        );
+        rgba(255, 255, 255, 0.045);
 
     border-radius:
-        9px;
+        8px;
 
+    padding:
+        clamp(9px, 0.8vw, 15px);
+
+    min-width: 0;
 }
 
 
-.metric-label {
+.data-label {
+    display: block;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
     font-size:
-        clamp(
-            10px,
-            0.85vw,
-            17px
-        );
+        clamp(10px, 0.8vw, 15px);
 
     text-transform:
         uppercase;
@@ -394,399 +218,76 @@ body {
     letter-spacing:
         0.05em;
 
+    margin-bottom: 4px;
 }
 
 
-.metric-value {
+.data-value {
+    display: block;
 
-    margin-top:
-        0.35vh;
+    color: var(--text);
 
     font-size:
-        clamp(
-            25px,
-            2.5vw,
-            50px
-        );
+        clamp(17px, 1.55vw, 30px);
 
-    font-weight:
-        800;
+    white-space: nowrap;
 
-    line-height:
-        1.05;
+    overflow: hidden;
 
+    text-overflow: ellipsis;
 }
 
 
-.metric-unit {
+.station-unavailable {
+    opacity: 0.7;
+}
 
-    color:
-        var(--muted);
+
+.unavailable-message {
+    color: var(--warning);
 
     font-size:
-        0.42em;
+        clamp(11px, 0.9vw, 16px);
 
-    font-weight:
-        400;
-
+    margin-top: 10px;
 }
 
-
-/* -----------------------------------------
-   WIND
------------------------------------------ */
-
-.wind-value {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        0.5vw;
-
-}
-
-
-.wind-direction {
-
-    color:
-        var(--cyan);
-
-    font-weight:
-        800;
-
-}
-
-
-.wind-arrow {
-
-    display:
-        inline-block;
-
-    color:
-        var(--cyan);
-
-    font-size:
-        1.05em;
-
-}
-
-
-/* -----------------------------------------
-   PRESSURE
------------------------------------------ */
-
-.pressure {
-
-    grid-column:
-        span 2;
-
-    background:
-        rgba(
-            53,
-            197,
-            255,
-            0.045
-        );
-
-}
-
-
-.pressure-row {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        space-between;
-
-    gap:
-        1vw;
-
-}
-
-
-.pressure-main {
-
-    font-size:
-        clamp(
-            25px,
-            2.5vw,
-            50px
-        );
-
-    font-weight:
-        800;
-
-}
-
-
-.pressure-trend {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        0.45vw;
-
-    font-size:
-        clamp(
-            13px,
-            1.1vw,
-            23px
-        );
-
-    font-weight:
-        700;
-
-}
-
-
-.trend-arrow {
-
-    font-size:
-        1.4em;
-
-}
-
-
-.trend-rising {
-
-    color:
-        var(--green);
-
-}
-
-
-.trend-steady {
-
-    color:
-        var(--cyan);
-
-}
-
-
-.trend-falling {
-
-    color:
-        var(--amber);
-
-}
-
-
-/* -----------------------------------------
-   CARD FOOTER
------------------------------------------ */
-
-.card-footer {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    margin-top:
-        0.7vh;
-
-    padding-top:
-        0.5vh;
-
-    border-top:
-        1px solid
-        rgba(
-            255,
-            255,
-            255,
-            0.06
-        );
-
-}
-
-
-.live {
-
-    color:
-        var(--green);
-
-    font-weight:
-        700;
-
-    font-size:
-        clamp(
-            10px,
-            0.75vw,
-            15px
-        );
-
-}
-
-
-.stale {
-
-    color:
-        var(--amber);
-
-}
-
-
-.error {
-
-    color:
-        var(--red);
-
-}
-
-
-/* -----------------------------------------
-   FOOTER
------------------------------------------ */
 
 footer {
+    flex-shrink: 0;
 
-    height:
-        5vh;
+    display: flex;
 
-    display:
-        flex;
+    justify-content: space-between;
 
-    justify-content:
-        space-between;
-
-    align-items:
-        center;
-
-    padding:
-        0
-        2vw;
-
-    color:
-        var(--muted);
+    color: var(--muted);
 
     font-size:
-        clamp(
-            9px,
-            0.7vw,
-            14px
-        );
-
+        clamp(10px, 0.8vw, 14px);
 }
 
-
-/* -----------------------------------------
-   LOADING SCREEN
------------------------------------------ */
-
-.splash {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-}
-
-
-.splash-content {
-
-    text-align:
-        center;
-
-}
-
-
-.splash-title {
-
-    color:
-        var(--cyan);
-
-    font-size:
-        clamp(
-            30px,
-            5vw,
-            80px
-        );
-
-    font-weight:
-        800;
-
-}
-
-
-.splash-subtitle {
-
-    margin-top:
-        1vh;
-
-    color:
-        var(--muted);
-
-    font-size:
-        clamp(
-            15px,
-            1.5vw,
-            28px
-        );
-
-}
-
-
-.splash-loading {
-
-    margin-top:
-        3vh;
-
-    color:
-        var(--green);
-
-}
-
-
-/* -----------------------------------------
-   SMALL DISPLAY FALLBACK
------------------------------------------ */
 
 @media (
-    max-width: 700px
+    orientation: portrait
 ) {
 
     body {
         overflow: auto;
     }
 
-    .dashboard {
 
+    .page {
         height: auto;
 
+        min-height: 100vh;
+    }
+
+
+    #station-grid {
         grid-template-columns:
             1fr;
 
         grid-template-rows:
-            auto;
-
+            repeat(4, minmax(220px, 1fr));
     }
-
-    .buoy-card {
-
-        min-height:
-            380px;
-
-    }
-
 }

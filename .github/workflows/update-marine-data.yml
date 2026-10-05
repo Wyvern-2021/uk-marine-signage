@@ -6,15 +6,24 @@ on:
 
   schedule:
 
-    # Run shortly after the Met Office's
-    # normal hourly publication window.
-
+    # Run at 25 minutes past every hour.
+    #
+    # The Met Office publishes its public
+    # marine dataset hourly, normally around
+    # 15 minutes past the hour.
     - cron: "25 * * * *"
 
 
 permissions:
 
   contents: write
+
+
+concurrency:
+
+  group: marine-data-update
+
+  cancel-in-progress: true
 
 
 jobs:
@@ -31,47 +40,137 @@ jobs:
         uses: actions/checkout@v4
 
 
-      - name: Install AWS CLI
+      - name: Set up Python
+
+        uses: actions/setup-python@v5
+
+        with:
+
+          python-version: "3.12"
+
+
+      - name: Install Python dependencies
 
         run: |
 
-          sudo apt-get update
+          python -m pip install \
+            --upgrade pip
 
-          sudo apt-get install -y awscli
-
-
-      - name: Download Met Office marine observations
-
-        run: |
-
-          rm -rf data/source
-
-          mkdir -p data/source
+          python -m pip install \
+            pandas \
+            lxml
 
 
-          aws s3 sync \
-            s3://met-office-marine-observations-data/ \
-            data/source/ \
-            --no-sign-request \
-            --region eu-west-2 \
-            --only-show-errors
-
-
-      - name: Build signage data
+      - name: Update marine data
 
         run: |
 
-          python3 scripts/build_data.py
+          python scripts/update_marine.py
 
 
-      - name: Remove raw CSV files
+      - name: Validate JSON
 
         run: |
 
-          rm -rf data/source
+          python -m json.tool \
+            data/marine.json \
+            > /dev/null
+
+          echo "JSON validation successful."
 
 
-      - name: Commit updated JSON
+      - name: Validate station list
+
+        run: |
+
+          python3 - <<'PY'
+
+          import json
+          import sys
+
+          expected_page1 = [
+              "Channel",
+              "Seven Stones",
+              "Sandettie",
+              "M5",
+          ]
+
+          expected_page2 = [
+              "Donna Nook",
+              "Lerwick",
+              "K7",
+              "Malin Head",
+          ]
+
+          with open(
+              "data/marine.json",
+              "r",
+              encoding="utf-8"
+          ) as file:
+
+              data = json.load(file)
+
+
+          if data.get("pages", {}).get(
+              "page1"
+          ) != expected_page1:
+
+              print(
+                  "ERROR: Page 1 station list "
+                  "is incorrect."
+              )
+
+              sys.exit(1)
+
+
+          if data.get("pages", {}).get(
+              "page2"
+          ) != expected_page2:
+
+              print(
+                  "ERROR: Page 2 station list "
+                  "is incorrect."
+              )
+
+              sys.exit(1)
+
+
+          stations = data.get(
+              "stations",
+              {}
+          )
+
+
+          for station in (
+              expected_page1
+              + expected_page2
+          ):
+
+              if station not in stations:
+
+                  print(
+                      f"ERROR: Missing station "
+                      f"{station}"
+                  )
+
+                  sys.exit(1)
+
+
+          print(
+              "All eight stations are present."
+          )
+
+          PY
+
+
+      - name: Show generated data
+
+        run: |
+
+          cat data/marine.json
+
+
+      - name: Commit updated data
 
         run: |
 
